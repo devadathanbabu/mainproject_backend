@@ -14,6 +14,15 @@ hashPasswordGenerator=async(pass)=>{
 router.post("/signup",async(req,res)=>{
     let {data}={"data":req.body}
 
+
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    if (!emailRegex.test(req.body.email)) {
+    return res.json({
+      status: "error",
+      message: "Invalid email format. Please enter a valid email address.",
+    });
+  }
+
     const existingUser = await studentModel.findOne({ "email": data.email });
     if (existingUser) {
         return res.json({
