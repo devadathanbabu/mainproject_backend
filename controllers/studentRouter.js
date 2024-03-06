@@ -13,6 +13,16 @@ hashPasswordGenerator=async(pass)=>{
 
 router.post("/signup",async(req,res)=>{
     let {data}={"data":req.body}
+
+    const existingUser = await studentModel.findOne({ "email": data.email });
+    if (existingUser) {
+        return res.json({
+            status: "Email ID already exists",
+        });
+    }
+
+
+
     let password=data.password
 
     const hashedPassword=await hashPasswordGenerator(password)
