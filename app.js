@@ -17,6 +17,6 @@ mongoose.connect("mongodb+srv://devadathan:10028030@cluster0.knxmb.mongodb.net/s
 app.use("/api/student",studentRouter)
 app.use("/api/teacher",teacherRouter)
 
-app.listen(3001,()=>{
+app.listen(3000,()=>{
     console.log("Server Running")
 })
