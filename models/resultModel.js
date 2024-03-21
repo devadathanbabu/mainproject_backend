@@ -1,0 +1,43 @@
+const mongoose=require("mongoose")
+const resultSchema=new mongoose.Schema(
+    {
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            required:true,
+            ref:"student"
+        },
+        semester:{
+            type:String,
+            required:true
+        },
+        sub1:{
+            type:String,
+            required:true
+        },
+        sub2:{
+            type:String,
+            required:true
+        },
+        sub3:{
+            type:String,
+            required:true
+        },
+        sub4:{
+            type:String,
+            required:true
+        },
+        sub5:{
+            type:String,
+            required:true
+        },
+        sub6:{
+            type:String,
+            required:true
+        },
+        sub7:{
+            type:String,
+            required:true
+        }
+    }
+)
+module.exports=mongoose.model("result",resultSchema)
