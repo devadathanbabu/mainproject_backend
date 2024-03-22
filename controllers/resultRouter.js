@@ -1,16 +1,33 @@
 const express = require("express");
 const resultModel = require("../models/resultModel");
+const Student = require("../models/studentModel"); // Assuming studentModel is the model for student documents
 const router = express.Router();
 
 router.post("/add", async (req, res) => {
     try {
-        const data = req.body;
-        if (!data.userId || !data.semester || !data.sub1 || !data.sub2 || !data.sub3 || !data.sub4 || !data.sub5 || !data.sub6 || !data.sub7) {
-            return res.status(400).json({ error: 'All required fields must be provided.' });
-        }
+        const { admissionNo, semester, sub1, sub2, sub3, sub4, sub5, sub6, sub7 } = req.body;
         
-        const mark = new resultModel(data);
-        const result = await mark.save();
+        // Find the student document based on admissionNo
+        const student = await Student.findOne({ admissionNo });
+        if (!student) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        // Create a new result document with the found user's _id
+        const result = new resultModel({
+            userId: student._id,
+            semester,
+            sub1,
+            sub2,
+            sub3,
+            sub4,
+            sub5,
+            sub6,
+            sub7
+        });
+
+        // Save the new result document
+        await result.save();
         
         res.json({ status: "success", result });
     } catch (error) {
@@ -21,9 +38,11 @@ router.post("/add", async (req, res) => {
 
 router.get("/viewall", async (req, res) => {
     try {
+        // Retrieve all result documents and populate the userId field with name, admissionNo, and branch
         const results = await resultModel.find()
             .populate("userId", "name admissionNo branch -_id")
             .exec();
+        
         res.json(results);
     } catch (error) {
         console.error(error);
