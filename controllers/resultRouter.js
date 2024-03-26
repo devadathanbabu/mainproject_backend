@@ -43,7 +43,7 @@ router.get("/viewall", async (req, res) => {
             .populate("userId", "name admissionNo branch -_id")
             .exec();
         
-        res.json(results);
+        res.json({status: "success", results});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
